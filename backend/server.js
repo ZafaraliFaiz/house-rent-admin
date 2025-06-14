@@ -1,8 +1,7 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('dotenv').config();
-
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -15,16 +14,22 @@ app.use(bodyParser.json());
 let rentEntries = [];
 
 // Get all rent entries
-app.get('/api/rent-entries', (req, res) => {
+app.get("/api/rent-entries", (req, res) => {
   res.json(rentEntries);
+});
+// Default route
+app.get("/", (req, res) => {
+  res.send("Backend is running. Use /api/rent-entries.");
 });
 
 // Add a new rent entry
-app.post('/api/rent-entries', (req, res) => {
+app.post("/api/rent-entries", (req, res) => {
   const { date, tenant, amount, notes } = req.body;
 
   if (!date || !tenant || !amount) {
-    return res.status(400).json({ message: 'Date, Tenant, and Amount are required.' });
+    return res
+      .status(400)
+      .json({ message: "Date, Tenant, and Amount are required." });
   }
 
   const newEntry = { date, tenant, amount, notes };
@@ -33,7 +38,6 @@ app.post('/api/rent-entries', (req, res) => {
   res.status(201).json(newEntry);
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
-  console.log('http://localhost:3000')
 });

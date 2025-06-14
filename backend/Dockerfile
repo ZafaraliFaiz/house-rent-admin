@@ -1,5 +1,5 @@
 # backend/Dockerfile
-FROM node:14
+FROM node:lts
 WORKDIR /app
 COPY . .
 RUN npm install
