@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import './RentForm.css';
+import React, { useState, useEffect } from "react";
+import "./RentForm.css";
 
 function RentForm() {
   const [formData, setFormData] = useState({
-    date: '',
-    tenant: '',
-    amount: '',
-    notes: ''
+    date: "",
+    tenant: "",
+    amount: "",
+    notes: "",
   });
 
   const [entries, setEntries] = useState([]);
 
   // Fetch entries from backend on mount
   useEffect(() => {
-    fetch('http://localhost:4000/api/rent-entries')
-      .then(res => res.json())
-      .then(data => setEntries(data))
+    fetch("/api/rent-entries") // Relative path
+      .then((res) => res.json())
+      .then((data) => setEntries(data))
       .catch(console.error);
   }, []);
 
@@ -25,20 +25,20 @@ function RentForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:4000/api/rent-entries', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("/api/rent-entries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to save entry');
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to save entry");
         return res.json();
       })
-      .then(newEntry => {
+      .then((newEntry) => {
         setEntries([...entries, newEntry]);
-        setFormData({ date: '', tenant: '', amount: '', notes: '' });
+        setFormData({ date: "", tenant: "", amount: "", notes: "" });
       })
-      .catch(err => alert(err.message));
+      .catch((err) => alert(err.message));
   };
 
   return (
@@ -49,10 +49,36 @@ function RentForm() {
         <div className="form-section">
           <h3>Enter Rent Details</h3>
           <form onSubmit={handleSubmit}>
-            <input type="date" name="date" value={formData.date} onChange={handleChange} required />
-            <input type="text" name="tenant" placeholder="Tenant Name" value={formData.tenant} onChange={handleChange} required />
-            <input type="number" name="amount" placeholder="Amount Received" value={formData.amount} onChange={handleChange} required />
-            <input type="text" name="notes" placeholder="Notes" value={formData.notes} onChange={handleChange} />
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="tenant"
+              placeholder="Tenant Name"
+              value={formData.tenant}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="number"
+              name="amount"
+              placeholder="Amount Received"
+              value={formData.amount}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="notes"
+              placeholder="Notes"
+              value={formData.notes}
+              onChange={handleChange}
+            />
             <button type="submit">Save Entry</button>
           </form>
         </div>
