@@ -11,10 +11,9 @@ function RentForm() {
 
   const [entries, setEntries] = useState([]);
 
-  const API_BASE = "/api";
-
+  // Fetch entries from backend on mount
   useEffect(() => {
-    fetch(`${API_BASE}/rent-entries`)
+    fetch("/api/rent-entries") // Relative path
       .then((res) => res.json())
       .then((data) => setEntries(data))
       .catch(console.error);
@@ -26,7 +25,7 @@ function RentForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${API_BASE}/rent-entries`, {
+    fetch("/api/rent-entries", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
