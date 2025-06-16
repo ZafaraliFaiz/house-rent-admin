@@ -4,30 +4,35 @@ FROM node:20-slim AS builder
 # Set working directory
 WORKDIR /app
 
-# Add npm config to speed up install
-COPY .npmrc .npmrc
+# Optional: Copy .npmrc if it exists (skip error if not)
+# You can keep this in Jenkins as a secret if needed
+# Use shell form to avoid COPY error if file is missing
+# Commented out unless needed explicitly
+# COPY .npmrc .npmrc
 
-# Copy only package files first for better caching
+# Copy only package files to leverage Docker cache
 COPY package*.json ./
 
-# Install dependencies with retry logic
-RUN npm install --omit=dev --prefer-offline --no-audit --progress=false
+# Install dependencies (no dev, no audit, no progress for CI speed)
+RUN npm ci --omit=dev --prefer-offline --no-audit --progress=false
 
-# Copy rest of the app
+# Copy the rest of the app
 COPY . .
 
-# Build the app
+# Build the React app
 RUN npm run build
 
 # Stage 2: Serve with NGINX
 FROM nginx:alpine
 
-# Clean default html
+# Clean default html folder
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built files
+# Copy built files from builder
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Expose and run
+# Expose port
 EXPOSE 80
+
+# Start NGINX
 CMD ["nginx", "-g", "daemon off;"]
