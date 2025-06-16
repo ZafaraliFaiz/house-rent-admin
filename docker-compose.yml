@@ -7,7 +7,7 @@ services:
       - "5000:4000"
 
   frontend:
-    image: zafaraliinamdar/house-rent-frontend
+    build: ./frontend # Build frontend locally from Dockerfile that copies build files into nginx
     container_name: frontend
     ports:
       - "81:80"
