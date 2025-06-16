@@ -11,10 +11,10 @@ function RentForm() {
 
   const [entries, setEntries] = useState([]);
 
-  const API_URL = "http://backend:4000"; // Docker Compose network hostname
+  const API_BASE = "http://3.109.158.207:5000";
 
   useEffect(() => {
-    fetch(`${API_URL}/api/rent-entries`)
+    fetch(`${API_BASE}/api/rent-entries`)
       .then((res) => res.json())
       .then((data) => setEntries(data))
       .catch(console.error);
