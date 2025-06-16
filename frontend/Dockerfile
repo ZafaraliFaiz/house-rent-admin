@@ -1,32 +1,33 @@
 # Stage 1: Build the React app
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 # Set working directory
 WORKDIR /app
 
+# Add npm config to speed up install
+COPY .npmrc .npmrc
+
 # Copy only package files first for better caching
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --omit=dev
+# Install dependencies with retry logic
+RUN npm install --omit=dev --prefer-offline --no-audit --progress=false
 
-
-
-# Copy rest of the code and build
+# Copy rest of the app
 COPY . .
+
+# Build the app
 RUN npm run build
 
-# Stage 2: Serve the app with NGINX
+# Stage 2: Serve with NGINX
 FROM nginx:alpine
 
-# Remove default nginx static assets
+# Clean default html
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built app from previous stage
+# Copy built files
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# Copy custom nginx config if you have one (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
-
+# Expose and run
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

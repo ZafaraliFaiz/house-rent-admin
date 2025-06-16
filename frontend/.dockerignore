@@ -1,6 +1,28 @@
+# Dependency directories
 node_modules
+*.log
+
+# Build output
 build
+dist
+coverage
+
+# Git files
 .git
 .gitignore
+
+# Docker and config files
 Dockerfile
+.dockerignore
+.env
+.env.local
+.env.development
+.env.production
+
+# Docs
 README.md
+LICENSE
+
+# OS/system files
+.DS_Store
+Thumbs.db
