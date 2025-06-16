@@ -7,9 +7,9 @@ services:
       - "5000:4000"
 
   frontend:
-    build: ./frontend # builds from Dockerfile in ./frontend folder
+    build: ./frontend
     container_name: frontend
     ports:
-      - "80:80" # Serve directly on port 80
+      - "80:80"
     depends_on:
       - backend
