@@ -11,10 +11,10 @@ function RentForm() {
 
   const [entries, setEntries] = useState([]);
 
-  const API_BASE = "http://3.109.158.207:5000";
+  const API_BASE = "/api";
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/rent-entries`)
+    fetch(`${API_BASE}/rent-entries`)
       .then((res) => res.json())
       .then((data) => setEntries(data))
       .catch(console.error);
@@ -26,7 +26,8 @@ function RentForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${API_URL}/api/rent-entries`, {
+    fetch(`${API_BASE}/rent-entries`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
