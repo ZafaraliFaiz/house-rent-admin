@@ -11,9 +11,10 @@ function RentForm() {
 
   const [entries, setEntries] = useState([]);
 
-  // Fetch entries from backend on mount
+  const API_URL = "http://backend:4000"; // Docker Compose network hostname
+
   useEffect(() => {
-    fetch("/api/rent-entries") // Relative path
+    fetch(`${API_URL}/api/rent-entries`)
       .then((res) => res.json())
       .then((data) => setEntries(data))
       .catch(console.error);
@@ -25,8 +26,7 @@ function RentForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("/api/rent-entries", {
-      method: "POST",
+    fetch(`${API_URL}/api/rent-entries`, {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     })
