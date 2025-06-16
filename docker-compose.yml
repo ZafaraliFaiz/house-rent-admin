@@ -7,18 +7,9 @@ services:
       - "5000:4000"
 
   frontend:
-    image: zafaraliinamdar/house-rent-frontend:latest
+    build: ./frontend # builds from Dockerfile in ./frontend folder
     container_name: frontend
     ports:
-      - "81:80"
-
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - "80:80" # Serve directly on port 80
     depends_on:
-      - frontend
       - backend
