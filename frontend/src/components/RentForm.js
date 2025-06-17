@@ -15,19 +15,19 @@ function RentForm() {
   const dummyData = [
     {
       date: "2025-06-01",
-      tenant: "John Doe",
+      tenant: "Rohit Sharma",
       amount: "12000",
       notes: "Paid in full",
     },
     {
       date: "2025-06-05",
-      tenant: "Jane Smith",
+      tenant: "Nikhil Tayade",
       amount: "10000",
       notes: "Late payment",
     },
     {
       date: "2025-06-10",
-      tenant: "Ali Khan",
+      tenant: "Ali Shaikj",
       amount: "11000",
       notes: "Advance for July",
     },
