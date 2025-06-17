@@ -11,12 +11,36 @@ function RentForm() {
 
   const [entries, setEntries] = useState([]);
 
-  // Fetch entries from backend on mount
+  // Dummy data
+  const dummyData = [
+    {
+      date: "2025-06-01",
+      tenant: "John Doe",
+      amount: "12000",
+      notes: "Paid in full",
+    },
+    {
+      date: "2025-06-05",
+      tenant: "Jane Smith",
+      amount: "10000",
+      notes: "Late payment",
+    },
+    {
+      date: "2025-06-10",
+      tenant: "Ali Khan",
+      amount: "11000",
+      notes: "Advance for July",
+    },
+  ];
+
   useEffect(() => {
-    fetch("/api/rent-entries") // Relative path
-      .then((res) => res.json())
-      .then((data) => setEntries(data))
-      .catch(console.error);
+    const savedEntries = JSON.parse(localStorage.getItem("rentEntries"));
+    if (savedEntries && savedEntries.length > 0) {
+      setEntries(savedEntries);
+    } else {
+      setEntries(dummyData);
+      localStorage.setItem("rentEntries", JSON.stringify(dummyData));
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -25,20 +49,11 @@ function RentForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("/api/rent-entries", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to save entry");
-        return res.json();
-      })
-      .then((newEntry) => {
-        setEntries([...entries, newEntry]);
-        setFormData({ date: "", tenant: "", amount: "", notes: "" });
-      })
-      .catch((err) => alert(err.message));
+    const newEntry = { ...formData };
+    const updatedEntries = [...entries, newEntry];
+    setEntries(updatedEntries);
+    localStorage.setItem("rentEntries", JSON.stringify(updatedEntries));
+    setFormData({ date: "", tenant: "", amount: "", notes: "" });
   };
 
   return (
